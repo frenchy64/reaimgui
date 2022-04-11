@@ -224,6 +224,14 @@ void Win32Window::initGL()
   if(gl3wInit())
     throw backend_error { "failed to initialize OpenGL context" };
 
+  // disable vsync prevent each SwapBuffers from waiting until the next screen frame
+  // https://www.khronos.org/registry/OpenGL/extensions/EXT/WGL_EXT_swap_control.txt
+  static int (APIENTRY *wglSwapIntervalEXT)(int);
+  if(!wglSwapIntervalEXT)
+    wglSwapIntervalEXT = reinterpret_cast<decltype(wglSwapIntervalEXT)>(wglGetProcAddress("wglSwapIntervalEXT"));
+  if(wglSwapIntervalEXT)
+    wglSwapIntervalEXT(0);
+
   m_renderer = new OpenGLRenderer;
 }
 
