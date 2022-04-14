@@ -19,6 +19,7 @@
 
 #include "error.hpp"
 #include "flat_set.hpp"
+#include "profiler.hpp"
 #include "window.hpp"
 
 #include <AppKit/AppKit.h>
@@ -113,6 +114,8 @@ void CocoaOpenGL::setSize(ImVec2)
 
 void CocoaOpenGL::render(void *)
 {
+  Profiler::Slice { "CocoaOpenGL::render" };
+
   // the intial setView in show() may fail if the view doesn't have a "device"
   // (eg. when docked not activated = hidden NSView)
   if(![m_gl view])
@@ -125,5 +128,6 @@ void CocoaOpenGL::render(void *)
 
 void CocoaOpenGL::swapBuffers(void *)
 {
+  Profiler::Slice { "CocoaOpenGL::swapBuffers" };
   [m_gl flushBuffer];
 }

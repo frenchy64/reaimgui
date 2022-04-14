@@ -22,6 +22,7 @@
 #include "action.hpp"
 #include "api.hpp"
 #include "docker.hpp"
+#include "profiler.hpp"
 #include "resource.hpp"
 #include "settings.hpp"
 #include "version.hpp"
@@ -136,6 +137,7 @@ extern "C" REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(
   API::announceAll(true);
   Action::setup();
   Settings::setup();
+  g_prof = new Profiler;
 
   return 1;
 }
