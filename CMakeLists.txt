@@ -88,6 +88,7 @@ else()
   )
 
   if(APPLE)
+    set(CMAKE_FIND_FRAMEWORK LAST) # dont find headers in Mono.framework in CI
     add_link_options(-Wl,-dead_strip)
   endif()
 
