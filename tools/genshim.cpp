@@ -164,6 +164,15 @@ return function(compat_version)
     if shim.version <= version then break end
     shim.apply()
   end
+
+  local api = {}
+  for name, func in pairs(reaper) do
+    name = name:match('^ImGui_(.+)$')
+    if name then
+      api[name] = func
+    end
+  end
+  return api
 end
 )";
 
