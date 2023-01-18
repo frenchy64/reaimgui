@@ -28,7 +28,7 @@
 -- GFX2IMGUI_NO_BLIT_PREMULTIPLY = false
 
 local ImGui = dofile(reaper.GetResourcePath() ..
-                     '/Scripts/ReaTeam Extensions/API/imgui.lua')('0.8')
+                     '/Scripts/ReaTeam Extensions/API/imgui.lua')('latest')
 local reaper, ogfx, print = reaper, gfx, print
 local debug, math, string, table, utf8 = debug, math, string, table, utf8
 

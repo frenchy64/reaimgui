@@ -156,13 +156,15 @@ local function parseVersion(ver)
 end
 
 return function(compat_version)
-  local version = parseVersion(compat_version)
-  assert(version <= )"; hexVersion(stream, version); stream << R"(,
-    ('reaimgui )" REAIMGUI_VERSION
-    R"( is too old (script requires %s)'):format(compat_version))
-  for _, shim in ipairs(shims) do
-    if shim.version <= version then break end
-    shim.apply()
+  if compat_version ~= 'latest' then
+    local version = parseVersion(compat_version)
+    assert(version <= )"; hexVersion(stream, version); stream << R"(,
+      ('reaimgui )" REAIMGUI_VERSION
+      R"( is too old (script requires %s)'):format(compat_version))
+    for _, shim in ipairs(shims) do
+      if shim.version <= version then break end
+      shim.apply()
+    end
   end
 
   local api = {}

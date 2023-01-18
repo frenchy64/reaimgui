@@ -50,7 +50,7 @@ tor()
 
 local ctx
 local ImGui = dofile(reaper.GetResourcePath() ..
-                     '/Scripts/ReaTeam Extensions/API/imgui.lua')('0.8')
+                     '/Scripts/ReaTeam Extensions/API/imgui.lua')('latest')
 local FLT_MIN, FLT_MAX = ImGui.NumericLimits_Float()
 local IMGUI_VERSION, IMGUI_VERSION_NUM, REAIMGUI_VERSION = ImGui.GetVersion()
 local demo = {
