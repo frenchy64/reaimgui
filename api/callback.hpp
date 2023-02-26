@@ -20,8 +20,7 @@
 
 #include "context.hpp"
 #include "error.hpp"
-
-class Function;
+#include "function.hpp"
 
 template<typename Data>
 class Callback {
@@ -33,6 +32,16 @@ public:
     operator bool()    const { return !!s_data; }
     Data *operator->() const { return Callback<Data>::s_data; }
   };
+
+  static void(*use(Function *func))(Data *)
+  {
+    if(!func)
+      return nullptr;
+
+    assertValid(func);
+    func->keepAlive();
+    return &invoke;
+  }
 
   static void invoke(Data *data)
   {

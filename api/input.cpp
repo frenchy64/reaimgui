@@ -65,12 +65,10 @@ static int runCallback(ImGuiInputTextCallbackData *data)
 
 static ImGuiInputTextCallback useCallback(Function *func)
 {
-  if(!func)
+  if(Callback<ImGuiInputTextCallbackData>::use(func))
+    return &runCallback;
+  else
     return nullptr;
-
-  assertValid(func);
-  func->keepAlive();
-  return &runCallback;
 }
 
 #define CALLBACK_ARGS useCallback(API_RO(callback)), API_RO(callback)

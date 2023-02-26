@@ -17,6 +17,8 @@
 
 #include "helper.hpp"
 
+#include "api_eel.hpp"
+#include "callback.hpp"
 #include "flags.hpp"
 #include "version.hpp"
 #include <imgui/imgui.h>
@@ -239,13 +241,15 @@ DEFINE_API(void, SetNextWindowSize, (ImGui_Context*,ctx)
 }
 
 DEFINE_API(void, SetNextWindowSizeConstraints, (ImGui_Context*,ctx)
-(double,size_min_w)(double,size_min_h)(double,size_max_w)(double,size_max_h),
+(double,size_min_w)(double,size_min_h)(double,size_max_w)(double,size_max_h)
+(ImGui_Function*,API_RO(callback)),
 R"(Set next window size limits. use -1,-1 on either X/Y axis to preserve the
 current size. Sizes will be rounded down.)")
 {
   FRAME_GUARD;
   ImGui::SetNextWindowSizeConstraints(
-    ImVec2(size_min_w, size_min_h), ImVec2(size_max_w, size_max_h));
+    ImVec2(size_min_w, size_min_h), ImVec2(size_max_w, size_max_h),
+    Callback<ImGuiSizeCallbackData>::use(API_RO(callback)), API_RO(callback));
 }
 
 DEFINE_API(void, SetNextWindowContentSize, (ImGui_Context*,ctx)
@@ -379,6 +383,32 @@ R"(Consider docking hierarchy (treat dockspace host as parent of docked window)
    (when used with _ChildWindows or _RootWindow).)");
 DEFINE_ENUM(ImGui, FocusedFlags_RootAndChildWindows,
   "FocusedFlags_RootWindow | FocusedFlags_ChildWindows");
+
+API_SECTION_P(properties, "Size Callback", "For SetNextWindowSizeConstraints.");
+
+DEFINE_EELVAR(ImVec2, Pos, "Read-only. Window position, for reference.");
+DEFINE_EELVAR(ImVec2, CurrentSize, "Read-only. Current window size.");
+DEFINE_EELVAR(ImVec2, DesiredSize,
+R"(Read-write. Desired size, based on user's mouse position.
+Write to this field to restrain resizing.)");
+
+template<>
+void Callback<ImGuiSizeCallbackData>::storeVars(Function *func)
+{
+  func->setDouble("Pos.x",         s_data->Pos.x);
+  func->setDouble("Pos.y",         s_data->Pos.y);
+  func->setDouble("CurrentSize.x", s_data->CurrentSize.x);
+  func->setDouble("CurrentSize.y", s_data->CurrentSize.y);
+  func->setDouble("DesiredSize.x", s_data->DesiredSize.x);
+  func->setDouble("DesiredSize.y", s_data->DesiredSize.y);
+}
+
+template<>
+void Callback<ImGuiSizeCallbackData>::loadVars(const Function *func)
+{
+  s_data->DesiredSize.x = *func->getDouble("DesiredSize.x");
+  s_data->DesiredSize.y = *func->getDouble("DesiredSize.y");
+}
 
 API_SUBSECTION("Docking",
 R"(Dock windows into other windows or in REAPER dockers.
