@@ -20,6 +20,7 @@
 #include "color.hpp"
 #include "drawlist.hpp"
 #include "font.hpp"
+#include "function.hpp"
 #include "image.hpp"
 #include "listclipper.hpp"
 #include "platform.hpp"
@@ -61,6 +62,7 @@ Supported types are:
 - ImGui_DrawList*
 - ImGui_DrawListSplitter*
 - ImGui_Font*
+- ImGui_Function*
 - ImGui_Image*
 - ImGui_ImageSet*
 - ImGui_ListClipper*
@@ -71,6 +73,7 @@ Supported types are:
   RESOURCE_ISVALID(Context);
   RESOURCE_ISVALID(DrawListSplitter);
   RESOURCE_ISVALID(Font);
+  RESOURCE_ISVALID(Function);
   RESOURCE_ISVALID(Image);
   RESOURCE_ISVALID(ImageSet);
   RESOURCE_ISVALID(ListClipper);
